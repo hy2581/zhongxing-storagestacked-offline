@@ -12,7 +12,7 @@ cd downloads/zhongxing-storagestacked-offline-20261009-burst
 bash run.sh
 ```
 
-下载支持续传，已完成且大小符合清单的分块会跳过。
+下载默认使用单连接，支持续传，已完成且大小符合清单的分块会跳过。每 5 秒显示当前分块已下载的字节数和百分比；连续 60 秒传输速度低于 1 字节/秒会中止当前请求并重试，单次请求最多 900 秒。每个文件最多尝试 6 次。按 Ctrl+C 可停止下载并保留续传文件。
 
 下载全部 `zhongxing-storagestacked-offline-20261009-burst.tar.part-*`、`PARTS.tsv` 和 `extract.sh`，放在同一个目录，然后执行：
 
@@ -32,11 +32,13 @@ bash run.sh
 
 ## 代理连接或续传失败
 
-更新仓库后，可使用单连接下载：
+下载长时间没有进度时，先按 Ctrl+C 停止原来的脚本，再更新仓库并继续下载：
 
 ```bash
 git pull --ff-only
-STORAGE_DOWNLOAD_JOBS=1 bash download.sh
+bash download.sh
 ```
 
 脚本保留大小正确的已完成分块；完整的 `.downloading` 文件直接接收，过大的临时文件重新下载，HTTP 416 或不支持 Range 时从头下载当前分块。错误提示会显示实际字节数、期望字节数和 HTTP 状态。`Proxy CONNECT aborted` 仍需检查客户端代理连接。
+
+若进度字节数持续增加，说明正在下载；若一直不变且反复出现 `Proxy CONNECT aborted`，需要检查客户端代理到 GitHub 下载地址的连接。可用 `STORAGE_DOWNLOAD_JOBS=2 bash download.sh` 指定并发数（1..16）；超时分别由 `STORAGE_STALL_SECONDS` 和 `STORAGE_REQUEST_SECONDS` 设置，单位为秒。
