@@ -48,3 +48,5 @@ bash download.sh
 宿主机需要 Linux x86_64、Bash、curl、GNU tar/coreutils，以及已启动且当前用户可访问的 Docker。下载脚本已用实际的 Bash 4.2 + curl 7.29 和 Bash 5.2 + curl 8.5 测试续传、大小错误、HTTP 416、停滞超时、中断清理和 HTTPS 代理跳转。旧版 curl 不支持的 `--http1.1` 参数会自动省略；TLS 证书验证保持开启。
 
 克隆成功只说明仓库连接可用，Release 分块会跳转到文件下载地址，代理也需要允许这条连接。脚本的超时和重试不能保证被代理持续拒绝的地址可下载。客户机器最终以实际下载、解包，以及 `bash run.sh` 生成的 `summary.json` 中 `passed: true` 为验收依据。
+
+制作方复核结果见 [CLIENT_VALIDATION.json](CLIENT_VALIDATION.json)。本次在空 Docker 环境中自动导入后，AXI、Vortex SMOKE/LLM、CoralNPU SMOKE/LLM 五项均通过，两个 SMOKE 输出 `42`，两个 LLM 输出 `blu`。本机首次导入和五项验收共约 41 分钟。公网实际下载 6 个分块，其余 406 个复用本地大小符合清单的分块后恢复完整交付包。此记录区分制作方验证和客户机器实际验收，客户系统与代理仍需实际确认。

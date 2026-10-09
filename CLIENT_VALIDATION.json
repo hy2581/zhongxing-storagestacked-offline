@@ -1,0 +1,153 @@
+{
+  "producer_workflow_passed": true,
+  "customer_machine_verified": false,
+  "verified_utc": "2026-10-09T10:54:02.897686+00:00",
+  "download_script_commit": "1e1286ff0130ccd28d24f99f1c9514702baf1b6b",
+  "image": "zhongxing-storagestacked:offline-20261009-burst",
+  "test_machine": {
+    "os": "Ubuntu 24.04 x86_64",
+    "docker_server": "29.1.3",
+    "native_bash": "GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)",
+    "native_curl": "curl 8.5.0 (x86_64-pc-linux-gnu) libcurl/8.5.0 OpenSSL/3.0.13 zlib/1.3 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 (+libidn2/2.3.7) libssh/0.10.6/openssl/zlib nghttp2/1.59.0 librtmp/2.3 OpenLDAP/2.6.10"
+  },
+  "download": {
+    "passed": true,
+    "fresh_public_parts": [
+      0,
+      1,
+      2,
+      3,
+      206,
+      411
+    ],
+    "reused_size_checked_local_parts": 406,
+    "note": "Full restore with all 412 parts; this run does not download all 10.3 GB from GitHub.",
+    "proxy_failure_seen": true,
+    "second_run_completed": true,
+    "all_parts_count": 412,
+    "outer_tar_bytes": 10275522560
+  },
+  "compatibility": {
+    "passed": true,
+    "legacy_bash": "4.2.0",
+    "legacy_curl": "7.29.0",
+    "legacy_curl_tls_backend": "GnuTLS 3.8.3",
+    "scope": "Legacy binaries built on Ubuntu 24.04. This is not a CentOS/RHEL system test.",
+    "suites": {
+      "legacy_resume": {
+        "passed": true,
+        "checks": [
+          "complete temporary file promoted",
+          "oversized temporary file restarted",
+          "partial file resumed",
+          "416 restarted without Range",
+          "short HTTP 200 response retried",
+          "connection failure retried",
+          "complete archive extracted"
+        ]
+      },
+      "legacy_proxy_https": {
+        "passed": true,
+        "checks": [
+          "HTTP 302 to HTTPS through proxy",
+          "CONNECT abort retried",
+          "TLS certificate verified",
+          "interrupted body resumed with Range",
+          "complete archive extracted"
+        ]
+      },
+      "modern_proxy_https": {
+        "passed": true,
+        "checks": [
+          "HTTP 302 to HTTPS through proxy",
+          "CONNECT abort retried",
+          "TLS certificate verified",
+          "interrupted body resumed with Range",
+          "complete archive extracted"
+        ]
+      },
+      "legacy_stall": [
+        {
+          "case": "stall",
+          "passed": true
+        },
+        {
+          "case": "deadline",
+          "passed": true
+        },
+        {
+          "case": "interrupt",
+          "passed": true
+        }
+      ],
+      "bash42_stall_modern_curl": [
+        {
+          "case": "stall",
+          "passed": true
+        },
+        {
+          "case": "deadline",
+          "passed": true
+        },
+        {
+          "case": "interrupt",
+          "passed": true
+        }
+      ]
+    },
+    "public_legacy_https_resume": {
+      "passed": true,
+      "part": 2,
+      "start_bytes": 1000000,
+      "final_bytes": 25000000
+    }
+  },
+  "runtime": {
+    "passed": true,
+    "initial_images": 0,
+    "automatic_import": true,
+    "network": "none",
+    "pull": "never",
+    "host_mounts": [
+      "results only"
+    ],
+    "elapsed_seconds": 2479.4,
+    "cases": {
+      "axi": {
+        "passed": true,
+        "summary": "axi/summary.json"
+      },
+      "vortex/smoke": {
+        "passed": true,
+        "summary": "vortex/smoke/summary.json",
+        "output": 42
+      },
+      "vortex/llm": {
+        "passed": true,
+        "summary": "vortex/llm/summary.json",
+        "output": "blu"
+      },
+      "coralnpu/smoke": {
+        "passed": true,
+        "summary": "coralnpu/smoke/summary.json",
+        "output": 42
+      },
+      "coralnpu/llm": {
+        "passed": true,
+        "summary": "coralnpu/llm/summary.json",
+        "output": "blu"
+      }
+    }
+  },
+  "storage": {
+    "docker_data_observed_peak_bytes": 50345639936,
+    "split_parts_bytes": 10275522560,
+    "restored_archive_bytes": 10275473782,
+    "suggested_same_disk_free_bytes": 100000000000
+  },
+  "customer_acceptance_pending": [
+    "Verify customer Linux architecture, tools, Docker access and disk space",
+    "Verify customer proxy can reach the Release download redirect",
+    "Run download.sh and run.sh on the customer machine and inspect passed=true in summary.json"
+  ]
+}
