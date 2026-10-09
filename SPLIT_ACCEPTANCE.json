@@ -2,39 +2,39 @@
   "passed": true,
   "parts": 412,
   "part_bytes": 25000000,
-  "total_bytes": 10275174400,
-  "image": "zhongxing-storagestacked:offline-20261009",
+  "total_bytes": 10275522560,
+  "image": "zhongxing-storagestacked:offline-20261009-burst",
   "restored_files": [
     {
       "name": "ACCEPTANCE.json",
-      "bytes": 3184
+      "bytes": 3582
     },
     {
       "name": "DELIVERY.json",
-      "bytes": 4104
+      "bytes": 4520
     },
     {
       "name": "SOURCE_VERSIONS.json",
-      "bytes": 2460
+      "bytes": 2838
     },
     {
       "name": "VALIDATION.json",
-      "bytes": 14640
+      "bytes": 19554
     },
     {
       "name": "run.sh",
-      "bytes": 2037
+      "bytes": 2043
     },
     {
       "name": "zhongxing-storagestacked-offline.tar.gz",
-      "bytes": 10275134670
+      "bytes": 10275473782
     },
     {
       "name": "使用说明.md",
-      "bytes": 5163
+      "bytes": 5630
     }
   ],
-  "actual_import_result": "Loaded image: zhongxing-storagestacked:offline-20261009",
+  "actual_import_result": "Loaded image: zhongxing-storagestacked:offline-20261009-burst",
   "restored_tool_check_passed": true,
   "rejected_invalid_parts": [
     "missing part",
@@ -43,12 +43,12 @@
   ],
   "device_acceptance": {
     "passed": true,
-    "image": "zhongxing-storagestacked:offline-20261009",
+    "image": "zhongxing-storagestacked:offline-20261009-burst",
     "platform": "linux/amd64",
     "network": "none",
     "pull": "never",
     "source_versions": {
-      "created_utc": "2026-10-09T01:35:58.450192+00:00",
+      "created_utc": "2026-10-09T04:45:19.955149+00:00",
       "workspace_root": "/home/hy258/hy/zhongxing",
       "projects": {
         "axi_StorageStacked": {
@@ -82,16 +82,26 @@
             " M coralnpu/runtime/check.py",
             " M coralnpu/runtime/check_llm_negative.py",
             " M coralnpu/runtime/compile.py",
+            " M coralnpu/runtime/configure.py",
             " M coralnpu/runtime/report.py",
             " M coralnpu/runtime/test.py",
+            " M coralnpu/runtime/verify.py",
             " M coralnpu/runtime/verify_llm.py",
             " M coralnpu/validation/2026-09-25-user-layout/README.md",
             " M \"docs/01-\\347\\224\\250\\346\\210\\267\\347\\216\\257\\345\\242\\203\\351\\205\\215\\347\\275\\256\\350\\257\\264\\346\\230\\216.md\"",
             " M \"docs/03-LLM\\347\\256\\200\\350\\246\\201\\350\\257\\264\\346\\230\\216.md\"",
             " M \"docs/04-integration\\344\\273\\213\\347\\273\\215.md\"",
             " M \"docs/05-\\351\\205\\215\\347\\275\\256\\345\\256\\236\\351\\252\\214\\344\\270\\216USER\\350\\264\\237\\350\\275\\275\\350\\257\\246\\350\\247\\243.md\"",
+            " M integration/axi_master.cc",
+            " M integration/axi_master.hh",
+            " M integration/config.hh",
+            " M integration/main.cc",
+            " M user/llm/config.json",
             " M user/llm/src/tinyllm.cpp",
-            "?? coralnpu/validation/2026-10-08-rvv/"
+            " M user/smoke/config.json",
+            "?? coralnpu/runtime/test_burst.py",
+            "?? coralnpu/validation/2026-10-08-rvv/",
+            "?? user/burst/"
           ]
         }
       }
@@ -247,7 +257,7 @@
               9271,
               7505
             ],
-            "report": "../../../../user/smoke/result/test-20261009-021325/smoke/report.md"
+            "report": "../../../../user/smoke/result/test-20261009-051609/smoke/report.md"
           },
           "llm": {
             "passed": true,
@@ -260,7 +270,7 @@
               18464,
               16730
             ],
-            "report": "../../../../user/llm/result/test-20261009-021325/llm/report.md"
+            "report": "../../../../user/llm/result/test-20261009-051609/llm/report.md"
           }
         }
       },
@@ -359,11 +369,11 @@
               },
               "source_write_byte": {
                 "rejected": true,
-                "reason": ""
+                "reason": "Write beat bytes differ"
               },
               "source_read_byte": {
                 "rejected": true,
-                "reason": ""
+                "reason": "Read beat bytes differ"
               },
               "source_id": {
                 "rejected": true,
@@ -383,7 +393,7 @@
               },
               "report_bad_source": {
                 "rejected": true,
-                "reason": "Command '['coralnpu/.cache/tools/toolchain/bin/python', 'coralnpu/runtime/verify.py', 'coralnpu/.cache/tools/tmp/coralnpu-report-negative-h_hwkrut/run']' returned non-zero exit status 1."
+                "reason": "Command '['coralnpu/.cache/tools/toolchain/bin/python', 'coralnpu/runtime/verify.py', 'coralnpu/.cache/tools/tmp/coralnpu-report-negative-j5cesoae/run']' returned non-zero exit status 1."
               },
               "report_bad_config": {
                 "rejected": true,
@@ -439,18 +449,158 @@
         "cases": {
           "smoke": {
             "passed": true,
-            "cycles": 287,
+            "cycles": 308,
             "transactions": 4,
             "output": 42,
-            "report": "user/smoke/result/test-20261009-023429/smoke/report.md"
+            "report": "user/smoke/result/test-20261009-053648/smoke/report.md"
           },
           "llm": {
             "passed": true,
-            "cycles": 194106,
+            "cycles": 222187,
             "transactions": 4196,
             "output": "blu",
-            "report": "user/llm/result/test-20261009-023429/llm/report.md"
+            "report": "user/llm/result/test-20261009-053648/llm/report.md"
           }
+        },
+        "burst_tests": {
+          "passed": true,
+          "cases": {
+            "1": {
+              "passed": true,
+              "axi_burst": {
+                "beats_per_request": 1,
+                "bytes_per_beat": 16,
+                "write_bursts": 21,
+                "write_beats": 21,
+                "read_bursts": 10,
+                "read_beats": 10
+              },
+              "stalled_edges": {
+                "W": 40,
+                "B": 19,
+                "R": 6
+              },
+              "report": "user/burst/result/burst-20261009-054327/beats-1/summary.json"
+            },
+            "2": {
+              "passed": true,
+              "axi_burst": {
+                "beats_per_request": 2,
+                "bytes_per_beat": 8,
+                "write_bursts": 21,
+                "write_beats": 42,
+                "read_bursts": 10,
+                "read_beats": 20
+              },
+              "stalled_edges": {
+                "W": 40,
+                "B": 12,
+                "R": 12
+              },
+              "report": "user/burst/result/burst-20261009-054327/beats-2/summary.json"
+            },
+            "4": {
+              "passed": true,
+              "axi_burst": {
+                "beats_per_request": 4,
+                "bytes_per_beat": 4,
+                "write_bursts": 21,
+                "write_beats": 84,
+                "read_bursts": 10,
+                "read_beats": 40
+              },
+              "stalled_edges": {
+                "W": 40,
+                "B": 13,
+                "R": 22
+              },
+              "report": "user/burst/result/burst-20261009-054327/beats-4/summary.json",
+              "negative_checks": {
+                "early_wlast": {
+                  "rejected": true,
+                  "reason": "incorrect WLAST"
+                },
+                "missing_wlast": {
+                  "rejected": true,
+                  "reason": "incorrect WLAST"
+                },
+                "early_rlast": {
+                  "rejected": true,
+                  "reason": "incorrect RLAST"
+                },
+                "mid_read_data": {
+                  "rejected": true,
+                  "reason": "RDATA mismatch at 0x90000fe4"
+                },
+                "wrong_burst_len": {
+                  "rejected": true,
+                  "reason": "incorrect WLAST"
+                },
+                "missing_write_beat": {
+                  "rejected": true,
+                  "reason": ""
+                }
+              }
+            },
+            "8": {
+              "passed": true,
+              "axi_burst": {
+                "beats_per_request": 8,
+                "bytes_per_beat": 2,
+                "write_bursts": 21,
+                "write_beats": 168,
+                "read_bursts": 10,
+                "read_beats": 80
+              },
+              "stalled_edges": {
+                "W": 40,
+                "B": 15,
+                "R": 54
+              },
+              "report": "user/burst/result/burst-20261009-054327/beats-8/summary.json"
+            },
+            "16": {
+              "passed": true,
+              "axi_burst": {
+                "beats_per_request": 16,
+                "bytes_per_beat": 1,
+                "write_bursts": 21,
+                "write_beats": 336,
+                "read_bursts": 10,
+                "read_beats": 160
+              },
+              "stalled_edges": {
+                "W": 40,
+                "B": 13,
+                "R": 107
+              },
+              "report": "user/burst/result/burst-20261009-054327/beats-16/summary.json"
+            }
+          },
+          "invalid_configs": {
+            "0": {
+              "rejected": true,
+              "reason": "axi.burst_beats must be 1, 2, 4, 8 or 16"
+            },
+            "3": {
+              "rejected": true,
+              "reason": "axi.burst_beats must be 1, 2, 4, 8 or 16"
+            },
+            "17": {
+              "rejected": true,
+              "reason": "axi.burst_beats must be 1, 2, 4, 8 or 16"
+            },
+            "True": {
+              "rejected": true,
+              "reason": "axi.burst_beats must be 1, 2, 4, 8 or 16"
+            },
+            "1.5": {
+              "rejected": true,
+              "reason": "axi.burst_beats must be 1, 2, 4, 8 or 16"
+            }
+          },
+          "legacy_default_beats": 4,
+          "scope": "Real CoralNPU RTL -> AXI INCR bursts -> UCIe -> online mem_sim; byte masks, both lanes, 4KiB boundaries, backpressure and replay"
         }
       }
     },
@@ -480,7 +630,15 @@
         "rvv_linear_calls": 42
       }
     },
-    "maker_evidence": "/home/hy258/hy/zhongxing/offline/results/check-20261009-101234-1921685/20261009-021237-5202aba9/summary.json",
+    "coralnpu_axi_burst": {
+      "beats_per_request": 4,
+      "bytes_per_beat": 4,
+      "write_bursts": 2249,
+      "write_beats": 8996,
+      "read_bursts": 1947,
+      "read_beats": 7788
+    },
+    "maker_evidence": "/home/hy258/hy/zhongxing/offline/results/check-20261009-131517-2016451/20261009-051519-7f0d95a9/summary.json",
     "customer_first_use": {
       "automatic_import": true,
       "image_tag_absent_before_launch": true,
@@ -510,8 +668,8 @@
           "output": "blu"
         }
       },
-      "maker_evidence": "/home/hy258/hy/zhongxing/offline/validation/offline-20261009/customer-results/20261009-102241-1926836/20261009-022450-b00b2bdb/summary.json"
+      "maker_evidence": "/home/hy258/hy/zhongxing/offline/validation/offline-20261009-burst/customer-results/20261009-133754-2035453/20261009-054005-ae983b65/summary.json"
     }
   },
-  "scope": "Actual split restoration, file-size verification, Docker import and tool checks. Device regression and customer default acceptance were executed before splitting; their reports are bundled."
+  "scope": "Actual split restoration, file-size verification, Docker import and tool checks. Device regression, AXI burst tests and customer default acceptance were executed before splitting; their reports are bundled."
 }

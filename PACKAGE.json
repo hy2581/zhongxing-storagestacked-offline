@@ -2,10 +2,10 @@
   "format": "ordered split tar",
   "part_bytes": 25000000,
   "parts": 412,
-  "total_bytes": 10275174400,
-  "delivery_directory": "zhongxing-storagestacked-offline-20261009",
+  "total_bytes": 10275522560,
+  "delivery_directory": "zhongxing-storagestacked-offline-20261009-burst",
   "source_versions": {
-    "created_utc": "2026-10-09T01:35:58.450192+00:00",
+    "created_utc": "2026-10-09T04:45:19.955149+00:00",
     "workspace_root": "/home/hy258/hy/zhongxing",
     "projects": {
       "axi_StorageStacked": {
@@ -39,49 +39,59 @@
           " M coralnpu/runtime/check.py",
           " M coralnpu/runtime/check_llm_negative.py",
           " M coralnpu/runtime/compile.py",
+          " M coralnpu/runtime/configure.py",
           " M coralnpu/runtime/report.py",
           " M coralnpu/runtime/test.py",
+          " M coralnpu/runtime/verify.py",
           " M coralnpu/runtime/verify_llm.py",
           " M coralnpu/validation/2026-09-25-user-layout/README.md",
           " M \"docs/01-\\347\\224\\250\\346\\210\\267\\347\\216\\257\\345\\242\\203\\351\\205\\215\\347\\275\\256\\350\\257\\264\\346\\230\\216.md\"",
           " M \"docs/03-LLM\\347\\256\\200\\350\\246\\201\\350\\257\\264\\346\\230\\216.md\"",
           " M \"docs/04-integration\\344\\273\\213\\347\\273\\215.md\"",
           " M \"docs/05-\\351\\205\\215\\347\\275\\256\\345\\256\\236\\351\\252\\214\\344\\270\\216USER\\350\\264\\237\\350\\275\\275\\350\\257\\246\\350\\247\\243.md\"",
+          " M integration/axi_master.cc",
+          " M integration/axi_master.hh",
+          " M integration/config.hh",
+          " M integration/main.cc",
+          " M user/llm/config.json",
           " M user/llm/src/tinyllm.cpp",
-          "?? coralnpu/validation/2026-10-08-rvv/"
+          " M user/smoke/config.json",
+          "?? coralnpu/runtime/test_burst.py",
+          "?? coralnpu/validation/2026-10-08-rvv/",
+          "?? user/burst/"
         ]
       }
     }
   },
-  "image": "zhongxing-storagestacked:offline-20261009",
+  "image": "zhongxing-storagestacked:offline-20261009-burst",
   "files": [
     {
       "name": "ACCEPTANCE.json",
-      "bytes": 3184
+      "bytes": 3582
     },
     {
       "name": "DELIVERY.json",
-      "bytes": 4104
+      "bytes": 4520
     },
     {
       "name": "SOURCE_VERSIONS.json",
-      "bytes": 2460
+      "bytes": 2838
     },
     {
       "name": "VALIDATION.json",
-      "bytes": 14640
+      "bytes": 19554
     },
     {
       "name": "run.sh",
-      "bytes": 2037
+      "bytes": 2043
     },
     {
       "name": "zhongxing-storagestacked-offline.tar.gz",
-      "bytes": 10275134670
+      "bytes": 10275473782
     },
     {
       "name": "使用说明.md",
-      "bytes": 5163
+      "bytes": 5630
     }
   ],
   "validation": "filenames, sizes, actual extraction and Docker import"

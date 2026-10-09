@@ -3,14 +3,18 @@
 set -euo pipefail
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 manifest=$here/PARTS.tsv
-bundle=zhongxing-storagestacked-offline-20261009
 output=${1:-$here}
 [[ $# -le 1 ]] || { echo '用法：bash extract.sh [解压位置]' >&2; exit 2; }
 [[ -f $manifest ]] || { echo "缺少分块清单：$manifest" >&2; exit 1; }
+IFS=$'\t' read -r first_name _ < "$manifest" || { echo '分块清单为空。' >&2; exit 1; }
+bundle=${first_name%.tar.part-0000}
+[[ $bundle =~ ^zhongxing-storagestacked-offline-[0-9]{8}(-[A-Za-z0-9._-]+)?$ && $first_name == "$bundle.tar.part-0000" ]] || {
+    echo '分块清单的版本或首块名称无效。' >&2; exit 1;
+}
 pieces=()
 total=0
 while IFS=$'\t' read -r name expected extra; do
-    [[ $name =~ ^zhongxing-storagestacked-offline-20261009\.tar\.part-[0-9]{4}$ && $expected =~ ^[0-9]+$ && -z $extra ]] || {
+    [[ $expected =~ ^[0-9]+$ && -z $extra ]] || {
         echo '分块清单格式错误。' >&2; exit 1;
     }
     printf -v ordinal '%04d' "${#pieces[@]}"
