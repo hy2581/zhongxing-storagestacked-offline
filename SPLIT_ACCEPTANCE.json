@@ -1,0 +1,517 @@
+{
+  "passed": true,
+  "parts": 412,
+  "part_bytes": 25000000,
+  "total_bytes": 10275174400,
+  "image": "zhongxing-storagestacked:offline-20261009",
+  "restored_files": [
+    {
+      "name": "ACCEPTANCE.json",
+      "bytes": 3184
+    },
+    {
+      "name": "DELIVERY.json",
+      "bytes": 4104
+    },
+    {
+      "name": "SOURCE_VERSIONS.json",
+      "bytes": 2460
+    },
+    {
+      "name": "VALIDATION.json",
+      "bytes": 14640
+    },
+    {
+      "name": "run.sh",
+      "bytes": 2037
+    },
+    {
+      "name": "zhongxing-storagestacked-offline.tar.gz",
+      "bytes": 10275134670
+    },
+    {
+      "name": "使用说明.md",
+      "bytes": 5163
+    }
+  ],
+  "actual_import_result": "Loaded image: zhongxing-storagestacked:offline-20261009",
+  "restored_tool_check_passed": true,
+  "rejected_invalid_parts": [
+    "missing part",
+    "wrong file size",
+    "empty manifest"
+  ],
+  "device_acceptance": {
+    "passed": true,
+    "image": "zhongxing-storagestacked:offline-20261009",
+    "platform": "linux/amd64",
+    "network": "none",
+    "pull": "never",
+    "source_versions": {
+      "created_utc": "2026-10-09T01:35:58.450192+00:00",
+      "workspace_root": "/home/hy258/hy/zhongxing",
+      "projects": {
+        "axi_StorageStacked": {
+          "commit": "cbde9f626a5dc01145e1a67924a55055aaa4bc56",
+          "working_tree_changes": []
+        },
+        "vortex_StorageStacked": {
+          "commit": "55702a2546d4d3d51f84b32045681a4e0822ce1c",
+          "working_tree_changes": [
+            " M README.md",
+            " M \"docs/01-\\347\\224\\250\\346\\210\\267\\347\\216\\257\\345\\242\\203\\351\\205\\215\\347\\275\\256\\350\\257\\264\\346\\230\\216.md\"",
+            " M \"docs/03-LLM\\347\\256\\200\\350\\246\\201\\350\\257\\264\\346\\230\\216.md\"",
+            " M \"docs/05-\\347\\240\\224\\347\\251\\266\\346\\210\\220\\346\\236\\234\\344\\270\\200\\345\\210\\206\\346\\236\\220.md\"",
+            " M \"docs/06-\\351\\205\\215\\347\\275\\256\\345\\256\\236\\351\\252\\214\\344\\270\\216USER\\350\\264\\237\\350\\275\\275\\350\\257\\246\\350\\247\\243.md\"",
+            " M third_party/gem5/runtime/check_negative.py",
+            " M third_party/gem5/runtime/compile.py",
+            " M third_party/gem5/runtime/report.py",
+            " M third_party/gem5/runtime/test.py",
+            " M third_party/gem5/runtime/verify_compute.py",
+            " M user/llm/src/host.cpp",
+            " M user/llm/src/kernel.cpp",
+            "?? user/llm/src/llm_parallel.h",
+            "?? validation/"
+          ]
+        },
+        "coralnpu_StorageStacked": {
+          "commit": "28a0f7c550d588ce5e94d58fda5a8afc3d5dda92",
+          "working_tree_changes": [
+            " M README.md",
+            " M coralnpu/native/BUILD",
+            " M coralnpu/runtime/check.py",
+            " M coralnpu/runtime/check_llm_negative.py",
+            " M coralnpu/runtime/compile.py",
+            " M coralnpu/runtime/report.py",
+            " M coralnpu/runtime/test.py",
+            " M coralnpu/runtime/verify_llm.py",
+            " M coralnpu/validation/2026-09-25-user-layout/README.md",
+            " M \"docs/01-\\347\\224\\250\\346\\210\\267\\347\\216\\257\\345\\242\\203\\351\\205\\215\\347\\275\\256\\350\\257\\264\\346\\230\\216.md\"",
+            " M \"docs/03-LLM\\347\\256\\200\\350\\246\\201\\350\\257\\264\\346\\230\\216.md\"",
+            " M \"docs/04-integration\\344\\273\\213\\347\\273\\215.md\"",
+            " M \"docs/05-\\351\\205\\215\\347\\275\\256\\345\\256\\236\\351\\252\\214\\344\\270\\216USER\\350\\264\\237\\350\\275\\275\\350\\257\\246\\350\\247\\243.md\"",
+            " M user/llm/src/tinyllm.cpp",
+            "?? coralnpu/validation/2026-10-08-rvv/"
+          ]
+        }
+      }
+    },
+    "regressions": {
+      "axi": {
+        "passed": true,
+        "native_tests_passed": 19,
+        "api_check": {
+          "passed": true,
+          "masked_read": [
+            1,
+            0,
+            3,
+            0,
+            5,
+            0,
+            7,
+            0
+          ],
+          "queue_retry": true,
+          "large_window_bytes": 8589934592,
+          "high_address_no_alias": true,
+          "sparse_zero_initialized": true
+        },
+        "cases": {
+          "smoke": {
+            "passed": true,
+            "transactions": 6,
+            "end_tick_fs": 676000000
+          },
+          "default": {
+            "passed": true,
+            "transactions": 6,
+            "end_tick_fs": 822000000
+          },
+          "slow": {
+            "passed": true,
+            "transactions": 6,
+            "end_tick_fs": 766000000
+          },
+          "backpressure": {
+            "passed": true,
+            "transactions": 6,
+            "end_tick_fs": 892000000
+          },
+          "replay": {
+            "passed": true,
+            "transactions": 192,
+            "end_tick_fs": 15674000000
+          },
+          "decode_error": {
+            "passed": true,
+            "transactions": 8,
+            "end_tick_fs": 916000000
+          },
+          "read_only": {
+            "passed": true,
+            "transactions": 3,
+            "end_tick_fs": 504000000
+          },
+          "write_only": {
+            "passed": true,
+            "transactions": 3,
+            "end_tick_fs": 476000000
+          }
+        },
+        "rejected_invalid_inputs": [
+          "zero_id",
+          "wide_size",
+          "unaligned",
+          "cross_4k",
+          "wrong_strobe",
+          "bad_data",
+          "corrupted_read_response"
+        ],
+        "memory_feedback": {
+          "passed": true,
+          "first_write_latency_fs": [
+            84000000,
+            144000000
+          ],
+          "memory_period_fs": [
+            250000,
+            1000000
+          ]
+        }
+      },
+      "vortex": {
+        "passed": true,
+        "regression_runs": 1,
+        "native_tests_passed": 19,
+        "api_check": {
+          "passed": true,
+          "masked_read": [
+            1,
+            0,
+            3,
+            0,
+            5,
+            0,
+            7,
+            0
+          ],
+          "queue_retry": true,
+          "large_window_bytes": 8589934592,
+          "high_address_no_alias": true,
+          "sparse_zero_initialized": true
+        },
+        "negative": {
+          "passed": true,
+          "checks": {
+            "idle_cpu": true,
+            "missing_worker": true,
+            "duplicate_thread": true,
+            "work_partition": true,
+            "gpu.cores": true,
+            "gpu.l1i_bytes": true,
+            "host.num_cpus": true,
+            "host.l2": true,
+            "host.tlb_entries": true,
+            "axi.outstanding": true,
+            "axi.period_ns": true,
+            "axi.replay": true,
+            "ucie.lanes": true,
+            "ucie.bits_per_symbol": true,
+            "ucie.rate_gtps": true,
+            "memsim.standard": true,
+            "memsim.slots": true,
+            "simulation.max_ticks": true,
+            "smoke_output": true,
+            "smoke_status": true,
+            "weight": true,
+            "kv": true,
+            "intermediate": true,
+            "generated_token": true,
+            "forward_count": true,
+            "linear_count": true,
+            "active_gpu_threads": true,
+            "thread_column_count": true,
+            "missing_output": true
+          }
+        },
+        "cases": {
+          "smoke": {
+            "passed": true,
+            "output": 42,
+            "cycles": 866,
+            "active_cpus": 4,
+            "cpu_instructions": [
+              2926654,
+              38373,
+              9271,
+              7505
+            ],
+            "report": "../../../../user/smoke/result/test-20261009-021325/smoke/report.md"
+          },
+          "llm": {
+            "passed": true,
+            "output": "blu",
+            "cycles": 226421,
+            "active_cpus": 4,
+            "cpu_instructions": [
+              3395231,
+              278523,
+              18464,
+              16730
+            ],
+            "report": "../../../../user/llm/result/test-20261009-021325/llm/report.md"
+          }
+        }
+      },
+      "coralnpu": {
+        "passed": true,
+        "regression_runs": 1,
+        "core": "RvvCoreMiniAxi",
+        "native_tests_passed": 19,
+        "api_check": {
+          "passed": true,
+          "masked_read": [
+            1,
+            0,
+            3,
+            0,
+            5,
+            0,
+            7,
+            0
+          ],
+          "queue_retry": true,
+          "large_window_bytes": 8589934592,
+          "high_address_no_alias": true,
+          "sparse_zero_initialized": true
+        },
+        "negative_checks": {
+          "check_llm_negative": {
+            "passed": true,
+            "checks": {
+              "wrong_weight": {
+                "rejected": true,
+                "reason": "Weight staging mismatch at 0x90000000"
+              },
+              "wrong_logits": {
+                "rejected": true,
+                "reason": "logits mismatch at 0x90030200: 5.140663146972656 != 4.140661507010103"
+              },
+              "wrong_generated_token": {
+                "rejected": true,
+                "reason": "report mismatch at 0x90050040: 5 != 4"
+              },
+              "wrong_kv": {
+                "rejected": true,
+                "reason": "kv_k mismatch at 0x90010000: -0.5839860439300537 != -1.5839859906711975"
+              },
+              "wrong_rvv_count": {
+                "rejected": true,
+                "reason": "report mismatch at 0x90050024: 43 != 42"
+              },
+              "missing_intermediate": {
+                "rejected": true,
+                "reason": "Missing weight/KV/intermediate/token/report writes"
+              },
+              "reference_causal_mask": {
+                "passed": true
+              },
+              "config_empty_prompt": {
+                "rejected": true,
+                "reason": "prompt and generated tokens exceed the model context (16)"
+              },
+              "config_unknown_character": {
+                "rejected": true,
+                "reason": "prompt contains characters absent from model vocabulary"
+              },
+              "config_context_overflow": {
+                "rejected": true,
+                "reason": "prompt and generated tokens exceed the model context (16)"
+              },
+              "config_zero_tokens": {
+                "rejected": true,
+                "reason": "program.generated_tokens must be an integer in [1, 8]"
+              },
+              "config_too_many_tokens": {
+                "rejected": true,
+                "reason": "program.generated_tokens must be an integer in [1, 8]"
+              },
+              "config_non_boolean_cache": {
+                "rejected": true,
+                "reason": "kv_cache must be boolean"
+              },
+              "config_unknown_field": {
+                "rejected": true,
+                "reason": "program: expected fields type prompt generated_tokens kv_cache"
+              },
+              "config_max_context_single_token": {
+                "passed": true
+              }
+            }
+          },
+          "check_negative": {
+            "passed": true,
+            "checks": {
+              "missing_source_response": {
+                "rejected": true,
+                "reason": ""
+              },
+              "source_write_byte": {
+                "rejected": true,
+                "reason": ""
+              },
+              "source_read_byte": {
+                "rejected": true,
+                "reason": ""
+              },
+              "source_id": {
+                "rejected": true,
+                "reason": ""
+              },
+              "early_source_response": {
+                "rejected": true,
+                "reason": ""
+              },
+              "axi_read_byte": {
+                "rejected": true,
+                "reason": "RDATA mismatch at 0x90000000"
+              },
+              "wave_data_bit": {
+                "rejected": true,
+                "reason": "VCD handshakes differ from C++ monitor CSV"
+              },
+              "report_bad_source": {
+                "rejected": true,
+                "reason": "Command '['coralnpu/.cache/tools/toolchain/bin/python', 'coralnpu/runtime/verify.py', 'coralnpu/.cache/tools/tmp/coralnpu-report-negative-h_hwkrut/run']' returned non-zero exit status 1."
+              },
+              "report_bad_config": {
+                "rejected": true,
+                "reason": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+              }
+            }
+          },
+          "check_smoke_negative": {
+            "passed": true,
+            "checks": {
+              "wrong_input": {
+                "rejected": true,
+                "reason": "SMOKE observed bytes differ from independent input + 1"
+              },
+              "wrong_output": {
+                "rejected": true,
+                "reason": "SMOKE observed bytes differ from independent input + 1"
+              },
+              "wrong_readback": {
+                "rejected": true,
+                "reason": "SMOKE observed bytes differ from independent input + 1"
+              },
+              "missing_transaction": {
+                "rejected": true,
+                "reason": "SMOKE requires exactly four requests and four responses"
+              },
+              "extra_transaction": {
+                "rejected": true,
+                "reason": "SMOKE requires exactly four requests and four responses"
+              },
+              "reordered_transactions": {
+                "rejected": true,
+                "reason": "SMOKE operation/address differs"
+              },
+              "config_negative": {
+                "rejected": true,
+                "reason": "program.input must be an integer in [0, 4294967295]"
+              },
+              "config_overflow": {
+                "rejected": true,
+                "reason": "program.input must be an integer in [0, 4294967295]"
+              },
+              "config_boolean": {
+                "rejected": true,
+                "reason": "program.input must be an integer in [0, 4294967295]"
+              },
+              "config_uint32_boundaries": {
+                "passed": true
+              }
+            }
+          }
+        },
+        "cases": {
+          "smoke": {
+            "passed": true,
+            "cycles": 287,
+            "transactions": 4,
+            "output": 42,
+            "report": "user/smoke/result/test-20261009-023429/smoke/report.md"
+          },
+          "llm": {
+            "passed": true,
+            "cycles": 194106,
+            "transactions": 4196,
+            "output": "blu",
+            "report": "user/llm/result/test-20261009-023429/llm/report.md"
+          }
+        }
+      }
+    },
+    "execution": {
+      "vortex": {
+        "mode": "SIMT FP32 linear layers",
+        "workgroups": 1,
+        "threads": 8,
+        "active_threads": 8,
+        "warps": 2,
+        "core": 0,
+        "linear_calls": 42,
+        "columns_per_thread": [
+          60,
+          54,
+          54,
+          54,
+          54,
+          54,
+          54,
+          54
+        ]
+      },
+      "coralnpu": {
+        "core": "RvvCoreMiniAxi",
+        "linear": "RVV FP32",
+        "rvv_linear_calls": 42
+      }
+    },
+    "maker_evidence": "/home/hy258/hy/zhongxing/offline/results/check-20261009-101234-1921685/20261009-021237-5202aba9/summary.json",
+    "customer_first_use": {
+      "automatic_import": true,
+      "image_tag_absent_before_launch": true,
+      "cases": {
+        "axi": {
+          "passed": true,
+          "summary": "axi/summary.json"
+        },
+        "vortex/smoke": {
+          "passed": true,
+          "summary": "vortex/smoke/summary.json",
+          "output": 42
+        },
+        "vortex/llm": {
+          "passed": true,
+          "summary": "vortex/llm/summary.json",
+          "output": "blu"
+        },
+        "coralnpu/smoke": {
+          "passed": true,
+          "summary": "coralnpu/smoke/summary.json",
+          "output": 42
+        },
+        "coralnpu/llm": {
+          "passed": true,
+          "summary": "coralnpu/llm/summary.json",
+          "output": "blu"
+        }
+      },
+      "maker_evidence": "/home/hy258/hy/zhongxing/offline/validation/offline-20261009/customer-results/20261009-102241-1926836/20261009-022450-b00b2bdb/summary.json"
+    }
+  },
+  "scope": "Actual split restoration, file-size verification, Docker import and tool checks. Device regression and customer default acceptance were executed before splitting; their reports are bundled."
+}
