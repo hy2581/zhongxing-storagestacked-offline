@@ -29,3 +29,14 @@ bash run.sh
 预留解包、Docker 镜像导入与结果目录的空间：解包约 10.3 GB，镜像约 23.9 GB，另需数 GB 运行结果和 Docker 临时空间。`PACKAGE.json` 记录源码版本与文件大小；解包后的 `VALIDATION.json` 和 `ACCEPTANCE.json` 是本次制作方的实际验收摘要。
 
 分块是一个外层 tar 的连续片段，不能逐块单独解压。Docker 镜像已压缩，外层不重复压缩。
+
+## 代理连接或续传失败
+
+更新仓库后，可使用单连接下载：
+
+```bash
+git pull --ff-only
+STORAGE_DOWNLOAD_JOBS=1 bash download.sh
+```
+
+脚本保留大小正确的已完成分块；完整的 `.downloading` 文件直接接收，过大的临时文件重新下载，HTTP 416 或不支持 Range 时从头下载当前分块。错误提示会显示实际字节数、期望字节数和 HTTP 状态。`Proxy CONNECT aborted` 仍需检查客户端代理连接。
