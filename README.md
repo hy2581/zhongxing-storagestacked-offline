@@ -26,7 +26,7 @@ bash run.sh
 
 共 412 块，每块 25,000,000 字节，最后一块 522,560 字节。清单只记录文件名和大小，不做哈希校验。脚本按清单顺序合并并解包，直接恢复完整交付目录，不额外保存合并后的大 tar 文件。镜像在交付目录中保持 gzip 压缩，首次运行 `bash run.sh` 自动导入，之后使用 `--pull=never --network=none` 运行。
 
-预留解包、Docker 镜像导入与结果目录的空间：解包约 10.3 GB，镜像约 23.9 GB，另需数 GB 运行结果和 Docker 临时空间。`PACKAGE.json` 记录源码版本与文件大小；解包后的 `VALIDATION.json` 和 `ACCEPTANCE.json` 是本次制作方的实际验收摘要。
+分块文件约 10.3 GB，解包后的交付目录约 10.3 GB，Docker 镜像约 23.9 GB；首次导入还会临时展开约 24 GB，默认验收会生成数 GiB 结果。下载目录、结果目录和 Docker 数据目录如果在同一块磁盘，建议至少预留 100 GB 可用空间；如果在不同磁盘，需要分别检查各自剩余空间。首次导入和默认验收可能耗时数十分钟。`PACKAGE.json` 记录源码版本与文件大小；解包后的 `VALIDATION.json` 和 `ACCEPTANCE.json` 是本次制作方的实际验收摘要。
 
 分块是一个外层 tar 的连续片段，不能逐块单独解压。Docker 镜像已压缩，外层不重复压缩。
 
@@ -42,3 +42,9 @@ bash download.sh
 脚本保留大小正确的已完成分块；完整的 `.downloading` 文件直接接收，过大的临时文件重新下载，HTTP 416 或不支持 Range 时从头下载当前分块。错误提示会显示实际字节数、期望字节数和 HTTP 状态。`Proxy CONNECT aborted` 仍需检查客户端代理连接。
 
 若进度字节数持续增加，说明正在下载；若一直不变且反复出现 `Proxy CONNECT aborted`，需要检查客户端代理到 GitHub 下载地址的连接。可用 `STORAGE_DOWNLOAD_JOBS=2 bash download.sh` 指定并发数（1..16）；超时分别由 `STORAGE_STALL_SECONDS` 和 `STORAGE_REQUEST_SECONDS` 设置，单位为秒。
+
+## 运行环境与下载兼容性
+
+宿主机需要 Linux x86_64、Bash、curl、GNU tar/coreutils，以及已启动且当前用户可访问的 Docker。下载脚本已用实际的 Bash 4.2 + curl 7.29 和 Bash 5.2 + curl 8.5 测试续传、大小错误、HTTP 416、停滞超时、中断清理和 HTTPS 代理跳转。旧版 curl 不支持的 `--http1.1` 参数会自动省略；TLS 证书验证保持开启。
+
+克隆成功只说明仓库连接可用，Release 分块会跳转到文件下载地址，代理也需要允许这条连接。脚本的超时和重试不能保证被代理持续拒绝的地址可下载。客户机器最终以实际下载、解包，以及 `bash run.sh` 生成的 `summary.json` 中 `passed: true` 为验收依据。
