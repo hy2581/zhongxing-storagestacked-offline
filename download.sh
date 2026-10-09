@@ -7,9 +7,19 @@ destination=${1:-$here/downloads}
 command -v curl >/dev/null || { echo '需要 curl 下载文件。' >&2; exit 1; }
 mkdir -p -- "$destination"
 destination=$(cd -- "$destination" && pwd)
+request() {
+    local url=$1 target=$2 resume=${3:-0} attempt
+    local options=(--http1.1 --fail --location --silent --show-error --connect-timeout 30)
+    [[ $resume == 0 ]] || options+=(--continue-at -)
+    for attempt in 1 2 3 4 5 6; do
+        if curl "${options[@]}" "$url" -o "$target"; then return 0; fi
+        [[ $attempt == 6 ]] && return 1
+        printf '连接中断，准备第 %s 次重试……\n' "$attempt" >&2
+        sleep "$((attempt*5))"
+    done
+}
 for name in PARTS.tsv extract.sh PACKAGE.json SPLIT_ACCEPTANCE.json; do
-    curl --fail --location --silent --show-error --retry 5 --retry-delay 5 \
-      --connect-timeout 30 "$base/$name" -o "$destination/$name.downloading"
+    request "$base/$name" "$destination/$name.downloading"
     mv -- "$destination/$name.downloading" "$destination/$name"
 done
 IFS=$'\t' read -r first_name _ < "$destination/PARTS.tsv" || { echo '分块清单为空。' >&2; exit 1; }
@@ -23,8 +33,7 @@ fetch_part() {
         return
     fi
     printf '下载：%s\n' "$name"
-    curl --fail --location --silent --show-error --retry 5 --retry-delay 5 \
-      --connect-timeout 30 --continue-at - "$base/$name" -o "$destination/$name.downloading"
+    request "$base/$name" "$destination/$name.downloading" 1
     actual=$(stat -c '%s' -- "$destination/$name.downloading")
     [[ $actual == "$expected" ]] || { echo "下载大小不符：$name" >&2; return 1; }
     mv -- "$destination/$name.downloading" "$destination/$name"
