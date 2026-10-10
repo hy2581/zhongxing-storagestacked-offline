@@ -149,5 +149,15 @@
     "Verify customer Linux architecture, tools, Docker access and disk space",
     "Verify customer proxy can reach the Release download redirect",
     "Run download.sh and run.sh on the customer machine and inspect passed=true in summary.json"
-  ]
+  ],
+  "update_20261010": {
+    "producer_default_acceptance_passed": true,
+    "producer_recheck": "RUNTIME_RECHECK.json",
+    "seccomp_reproduction": "SECCOMP_REPRODUCTION.json",
+    "customer_docker_cli_version": "20.10.0",
+    "customer_seccomp_unconfined_compile_passed": true,
+    "customer_final_smoke_summary_verified": false,
+    "compatibility_entrypoint": "run-seccomp-check.sh",
+    "compatibility_notes": "DOCKER_COMPATIBILITY.md"
+  }
 }

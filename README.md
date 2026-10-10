@@ -50,3 +50,47 @@ bash download.sh
 克隆成功只说明仓库连接可用，Release 分块会跳转到文件下载地址，代理也需要允许这条连接。脚本的超时和重试不能保证被代理持续拒绝的地址可下载。客户机器最终以实际下载、解包，以及 `bash run.sh` 生成的 `summary.json` 中 `passed: true` 为验收依据。
 
 制作方复核结果见 [CLIENT_VALIDATION.json](CLIENT_VALIDATION.json)。本次在空 Docker 环境中自动导入后，AXI、Vortex SMOKE/LLM、CoralNPU SMOKE/LLM 五项均通过，两个 SMOKE 输出 `42`，两个 LLM 输出 `blu`。本机首次导入和五项验收共约 41 分钟。公网实际下载 6 个分块，其余 406 个复用本地大小符合清单的分块后恢复完整交付包。此记录区分制作方验证和客户机器实际验收，客户系统与代理仍需实际确认。
+
+## Docker 20.10.0 编译失败
+
+如果编译日志出现 `posix_spawn failed: Operation not permitted`，请阅读
+[Docker 兼容说明](DOCKER_COMPATIBILITY.md)。在克隆仓库后自动下载并解包的目录中，
+可直接复制最新兼容入口：
+
+```bash
+cd downloads/zhongxing-storagestacked-offline-20261009-burst
+cp ../../run-seccomp-check.sh .
+sudo bash run-seccomp-check.sh vortex smoke
+```
+
+等待最终 `PASS` 后，用 `sudo bash run-seccomp-check.sh` 执行默认五项验收。
+`sudo bash run-seccomp-check.sh shell` 进入容器，执行 `ls` 可看到三个项目；
+`cd vortex_StorageStacked` 后执行 `ls docs` 查看中文文档，输入 `exit` 退出。
+兼容脚本只对本次容器关闭 seccomp，继续断网且不拉取镜像。
+默认 `run.sh` 保留原安全策略；长期应更新 Docker 和配套运行时。
+
+已下载旧归档的用户也可以从同一 Release 单独下载 `run-seccomp-check.sh`，
+放在原 `run.sh` 旁边使用。原 412 个分块及镜像是固定的 2026-10-09 快照；
+2026-10-10 更新的是 GitHub 源码、中文文档、制作脚本、兼容入口和复测记录，
+本次没有重建或替换已发布的大镜像。
+
+## 最新源码与制作入口
+
+三个项目与中文逐文件讲解分别维护在：
+
+- [AXI 存储](https://github.com/hy2581/axi_StorageStacked)
+- [Vortex SIMT](https://github.com/hy2581/vortex_StorageStacked)
+- [CoralNPU RVV 与 AXI burst](https://github.com/hy2581/coralnpu_StorageStacked)
+- [中文逐文件讲解](https://github.com/hy2581/StorageStacked-docs)
+
+本次提交号见 [CURRENT_SOURCES.json](CURRENT_SOURCES.json)，冻结镜像的历史来源仍见
+`PACKAGE.json`。制作脚本与 Dockerfile 位于 [offline/](offline/README.md)，
+包括构建、验收、导出、分块、下载和上传入口。制作时需把三个已准备好工具和缓存的
+项目及 `markdown/` 放在同一工作区，再把 `offline/`、根目录 `README.md` 和
+`accept.sh` 放到该工作区；这些脚本不承担首次下载依赖的职责。
+
+2026-10-10 在已导入原镜像上重新运行默认五项全部通过，两个 SMOKE 输出 `42`，
+两个 LLM 输出 `blu`。没有重新导入镜像或重跑 `test` 全回归。
+28 个待发布的运行源码、配置及新增源文件与复测镜像逐字节相同。
+客户提供 Docker 客户端 20.10.0，并确认兼容入口已越过编译进入仿真；
+客户完整验收仍以自己的最终 `summary.json` 为准。

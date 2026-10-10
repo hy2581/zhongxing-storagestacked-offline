@@ -1,0 +1,62 @@
+{
+  "image": "zhongxing-storagestacked:offline-20261009-burst",
+  "host_docker": "29.1.3",
+  "llvm_private_glibc": "2.34",
+  "probe_scope": "Minimal RV32 assembly compilation with the bundled clang++; not a full smoke regression",
+  "cases": {
+    "docker-default": {
+      "exit_code": 0,
+      "output": "ld.so (GNU libc) stable release version 2.34.\n-rw-r--r-- 1 root root 432 Oct 10 01:30 /tmp/spawn-probe.o\n"
+    },
+    "clone3-EPERM": {
+      "exit_code": 1,
+      "output": "ld.so (GNU libc) stable release version 2.34.\nclang++: error: unable to execute command: posix_spawn failed: Operation not permitted\n"
+    },
+    "clone3-ENOSYS": {
+      "exit_code": 0,
+      "output": "ld.so (GNU libc) stable release version 2.34.\n-rw-r--r-- 1 root root 432 Oct 10 01:30 /tmp/spawn-probe.o\n"
+    }
+  },
+  "customer_log_error": "clang++: fatal error: unable to execute command: posix_spawn failed: Operation not permitted",
+  "conclusion": "Customer compilation passed after only disabling seccomp for the container, confirming the seccomp blocker. A clone3 EPERM rule reproduces the error locally; an ENOSYS rule permits glibc fallback.",
+  "temporary_unconfined_probe": {
+    "exit_code": 0,
+    "object_bytes": 432
+  },
+  "helper_script": "run-seccomp-check.sh",
+  "full_default_run": "Original image fresh session 20261010-010948-42c1906b; detailed producer summaries included in RUNTIME_RECHECK.json.",
+  "customer_retry": {
+    "docker_cli_version": "20.10.0",
+    "seccomp_unconfined": true,
+    "compilation_passed": true,
+    "stage_seen": "[2/3] gem5 running host.elf and Vortex program.vxbin",
+    "full_smoke_result": "not yet supplied"
+  },
+  "full_default_run_passed": true,
+  "full_default_run_cases": {
+    "axi": {
+      "passed": true,
+      "summary": "axi/summary.json"
+    },
+    "vortex/smoke": {
+      "passed": true,
+      "summary": "vortex/smoke/summary.json",
+      "output": 42
+    },
+    "vortex/llm": {
+      "passed": true,
+      "summary": "vortex/llm/summary.json",
+      "output": "blu"
+    },
+    "coralnpu/smoke": {
+      "passed": true,
+      "summary": "coralnpu/smoke/summary.json",
+      "output": 42
+    },
+    "coralnpu/llm": {
+      "passed": true,
+      "summary": "coralnpu/llm/summary.json",
+      "output": "blu"
+    }
+  }
+}

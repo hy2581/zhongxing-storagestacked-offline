@@ -1,0 +1,34 @@
+{
+  "updated_utc": "2026-10-10T01:48:29.472768+00:00",
+  "projects": {
+    "axi_StorageStacked": {
+      "repository": "https://github.com/hy2581/axi_StorageStacked",
+      "branch": "main",
+      "commit": "cbde9f626a5dc01145e1a67924a55055aaa4bc56"
+    },
+    "vortex_StorageStacked": {
+      "repository": "https://github.com/hy2581/vortex_StorageStacked",
+      "branch": "main",
+      "commit": "977cfe8acb737d2f99a6304135a861ba8112ca9c"
+    },
+    "coralnpu_StorageStacked": {
+      "repository": "https://github.com/hy2581/coralnpu_StorageStacked",
+      "branch": "main",
+      "commit": "b90c7140d2717ee0a0dbec8308ae3488510b9acf"
+    },
+    "StorageStacked-docs": {
+      "repository": "https://github.com/hy2581/StorageStacked-docs",
+      "branch": "main",
+      "commit": "ba05fca68a2e979d323b595a7147a4bf65b57487"
+    }
+  },
+  "frozen_image": "zhongxing-storagestacked:offline-20261009-burst",
+  "image_rebuilt": false,
+  "image_source_metadata": "PACKAGE.json",
+  "changed_runtime_source_files_match_validated_image": {
+    "compared_files": 28,
+    "different": []
+  },
+  "producer_default_acceptance": "RUNTIME_RECHECK.json",
+  "customer_complete_acceptance_verified": false
+}
