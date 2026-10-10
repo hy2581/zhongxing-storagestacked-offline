@@ -34,7 +34,7 @@ for p in ('axi_StorageStacked','vortex_StorageStacked','coralnpu_StorageStacked'
     projects[p]={'commit':commit,'working_tree_changes':status.splitlines()}
 Path(sys.argv[2]).write_text(json.dumps({'created_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'workspace_root':str(root),'projects':projects},ensure_ascii=False,indent=2)+'\n')
 PY
-cp "$root/offline/Dockerfile" "$root/offline/entrypoint.py" "$root/offline/prepare.sh" "$root/offline/fix-native-cache.sh" "$context/"
+cp "$root/offline/Dockerfile" "$root/offline/entrypoint.py" "$root/offline/docker-compat-entrypoint.py" "$root/offline/prepare.sh" "$root/offline/fix-native-cache.sh" "$context/"
 mkdir -p "$context/system-tools"
 cp "$root"/offline/system-tools/*.deb "$context/system-tools/"
 # One archive avoids the legacy builder's quadratic per-file COPY lookup.

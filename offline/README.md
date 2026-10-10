@@ -4,7 +4,7 @@
 
 ## 用户使用
 
-GitHub 下载入口：[offline-20261009-burst](https://github.com/hy2581/zhongxing-storagestacked-offline/releases/tag/offline-20261009-burst)。412 个分块，每块 25,000,000 字节，最后一块较小。克隆 [发布仓库](https://github.com/hy2581/zhongxing-storagestacked-offline)后执行 `bash download.sh`，自动下载并解包；已有全部分块、`PARTS.tsv` 和 `extract.sh` 时执行 `bash extract.sh`。核对使用文件名、大小和实际导入结果。 下载默认单连接，每 5 秒显示分块进度；连续 60 秒低于 1 字节/秒或单次请求超过 900 秒会重试，每个文件最多尝试 6 次。按 Ctrl+C 可停止下载并保留续传文件；更新脚本后重新运行即可继续。 下载已用实际 Bash 4.2 + curl 7.29 和 Bash 5.2 + curl 8.5 测试；旧版 curl 不支持的 `--http1.1` 参数会自动省略。制作方最新复核见 [CLIENT_VALIDATION.json](https://github.com/hy2581/zhongxing-storagestacked-offline/blob/main/CLIENT_VALIDATION.json)，其中区分制作方验证与客户机器实际验收。
+GitHub 下载入口：[offline-20261009-burst](https://github.com/hy2581/zhongxing-storagestacked-offline/releases/tag/offline-20261009-burst)。412 个分块，每块 25,000,000 字节，最后一块较小。克隆 [发布仓库](https://github.com/hy2581/zhongxing-storagestacked-offline)后执行 `bash download.sh`，自动下载并解包；已有全部分块、`PARTS.tsv`、`extract.sh` 与四个启动补丁文件（见兼容说明）时执行 `bash extract.sh`。核对使用文件名、大小和实际导入结果。 下载默认单连接，每 5 秒显示分块进度；连续 60 秒低于 1 字节/秒或单次请求超过 900 秒会重试，每个文件最多尝试 6 次。按 Ctrl+C 可停止下载并保留续传文件；更新脚本后重新运行即可继续。 下载已用实际 Bash 4.2 + curl 7.29 和 Bash 5.2 + curl 8.5 测试；旧版 curl 不支持的 `--http1.1` 参数会自动省略。制作方最新复核见 [CLIENT_VALIDATION.json](https://github.com/hy2581/zhongxing-storagestacked-offline/blob/main/CLIENT_VALIDATION.json)，其中区分制作方验证与客户机器实际验收。
 
 把交付目录复制到本机，进入目录执行：
 
@@ -16,11 +16,12 @@ bash run.sh
 
 默认验收保留完整波形并生成视图，通常需要数十分钟；运行时间随机器变化。只检查环境可执行 `bash run.sh check`，单独运行某个设备可使用下面的命令。
 
-Docker 20.10.0 等旧运行环境可能在 LLVM 编译时出现
-`posix_spawn failed: Operation not permitted`。本次已复现 seccomp 拒绝子进程创建的机制，
-客户用临时兼容入口后编译恢复。完整操作、进入源码目录的方法和验收范围见
-[Docker 兼容说明](DOCKER_COMPATIBILITY.md)。`run-seccomp-check.sh` 只对测试容器
-关闭 seccomp，默认 `run.sh` 保留原安全策略；旧归档使用前可从发布仓库取得兼容脚本。
+正式 `run.sh` 已修复旧 Docker 下的 `posix_spawn failed: Operation not permitted`：
+保留 Docker seccomp，追加容器内兼容过滤器，使编译器回退到可用的进程创建方式。
+下载和解包会自动安装最新版 `run.sh` 与 `docker-compat-entrypoint.py`；
+已解包的用户只需更新启动补丁，无需重下镜像。
+操作与验证范围见 [Docker 兼容说明](DOCKER_COMPATIBILITY.md)。
+`run-seccomp-check.sh` 仅保留为显式关闭 seccomp 的诊断入口。
 
 启动固定使用 `--pull=never --network=none`。不执行联网安装，不拉取镜像，不使用宿主机项目源码、工具链或许可证。镜像内部保留构建时的固定路径，用户把交付目录放在任意路径即可。
 
@@ -49,7 +50,7 @@ bash run.sh axi --input ./transactions.json --scale 4 --replay
 
 ## 手动导入与运行
 
-无需启动脚本也可以：
+推荐使用 `run.sh` 自动处理旧 Docker 兼容。以下手动命令使用镜像原始入口，适用于已更新运行时的环境：
 
 ```bash
 docker load --input zhongxing-storagestacked-offline.tar.gz

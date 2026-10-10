@@ -8,16 +8,21 @@
 
 完整回归和默认五项断网验收均通过。分块恢复后的镜像已实际导入 Docker 并通过工具检查，详见 `SPLIT_ACCEPTANCE.json`。
 
-## 2026-10-10 客户兼容与源码同步
+## 2026-10-10 正式 Docker 兼容修复
 
-新增 `run-seccomp-check.sh` 和 `DOCKER_COMPATIBILITY.md`。Docker 20.10.0 客户
-原先在编译时出现 `posix_spawn failed: Operation not permitted`，关闭本次容器的
-seccomp 后已进入仿真。该脚本是临时兼容验证；长期应更新 Docker 和配套运行时，
-再使用默认 `run.sh`。
+新版 `run.sh` 保留 Docker seccomp，使用 `docker-compat-entrypoint.py` 让 glibc
+在旧 Docker 的 `clone3` 被拒绝时回退，修复 `posix_spawn failed: Operation not permitted`。
+默认不关闭 seccomp，不需要手动修改启动命令。下载及解包自动安装最新启动补丁，
+旧归档入口备份为 `run-original.sh`。
 
-制作方 Docker 29.1.3 上重新执行默认五项验收全部通过，详见
-`RUNTIME_RECHECK.json`。`SECCOMP_REPRODUCTION.json` 记录相同镜像下的最小复现。
-客户完整 SMOKE 的最终报告尚未提供，不把编译恢复记成完整验收通过。
+已解包用户单独下载 `run.sh`、`docker-compat-entrypoint.py`、`run-seccomp-check.sh` 和
+`DOCKER_COMPATIBILITY.md`，放到离线包目录即可运行 `sudo bash run.sh vortex smoke`。
+进入源码执行 `sudo bash run.sh shell`。`run-seccomp-check.sh` 仅保留为临时诊断入口。
+原 412 个分块和大镜像没有重建或替换，无需重新下载。
 
-三个源码仓库和中文讲解同步至当前工作区版本，提交号见 `CURRENT_SOURCES.json`。
-原 412 个分块及镜像维持冻结快照；已有归档单独取得兼容脚本即可重试，无需重新下载镜像。
+制作方用模拟旧版拒绝行为的策略复现原错误，确认修复后编译成功，并验证其他
+系统调用拒绝规则仍生效。模拟旧策略下完整 Vortex SMOKE 通过（41 → 42），
+默认策略下 CoralNPU SMOKE 与 AXI 也通过，见 `DOCKER_FIX_VALIDATION.json`。
+客户曾通过关闭 seccomp 越过编译阶段；客户完整报告及正式补丁实测仍待提供。
+原镜像此前制作方默认五项复测通过，见 `RUNTIME_RECHECK.json`，不代替客户实测。
+三个源码仓库和中文讲解的提交号见 `CURRENT_SOURCES.json`。

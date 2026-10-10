@@ -6,6 +6,10 @@ manifest=$here/PARTS.tsv
 output=${1:-$here}
 [[ $# -le 1 ]] || { echo '用法：bash extract.sh [解压位置]' >&2; exit 2; }
 [[ -f $manifest ]] || { echo "缺少分块清单：$manifest" >&2; exit 1; }
+patch_files=(run.sh docker-compat-entrypoint.py run-seccomp-check.sh DOCKER_COMPATIBILITY.md)
+for name in "${patch_files[@]}"; do
+    [[ -f $here/$name ]] || { echo "缺少启动补丁：$here/$name；请使用最新版 download.sh 下载，或从 Release 下载这四个文件。" >&2; exit 1; }
+done
 IFS=$'\t' read -r first_name _ < "$manifest" || { echo '分块清单为空。' >&2; exit 1; }
 bundle=${first_name%.tar.part-0000}
 [[ $bundle =~ ^zhongxing-storagestacked-offline-[0-9]{8}(-[A-Za-z0-9._-]+)?$ && $first_name == "$bundle.tar.part-0000" ]] || {
@@ -41,10 +45,9 @@ restored=$stage/$bundle
 for name in run.sh 使用说明.md SOURCE_VERSIONS.json DELIVERY.json ACCEPTANCE.json VALIDATION.json zhongxing-storagestacked-offline.tar.gz; do
     [[ -f $restored/$name ]] || { echo "解包后缺少文件：$name" >&2; exit 1; }
 done
-mv -- "$restored" "$output/$bundle"
-for extra in run-seccomp-check.sh DOCKER_COMPATIBILITY.md; do
-    if [[ -f $here/$extra ]]; then
-        cp -- "$here/$extra" "$output/$bundle/$extra"
-    fi
+cp -- "$restored/run.sh" "$restored/run-original.sh"
+for extra in "${patch_files[@]}"; do
+    cp -- "$here/$extra" "$restored/$extra"
 done
+mv -- "$restored" "$output/$bundle"
 printf '解包完成：%s\n运行：cd "%s" && bash run.sh\n' "$output/$bundle" "$output/$bundle"

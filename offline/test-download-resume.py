@@ -30,6 +30,8 @@ resources = dict(parts)
 resources.update({'PARTS.tsv': ''.join(f'{n}\t{len(v)}\n' for n, v in parts.items()).encode(),
                   'extract.sh': script.with_name('extract-release.sh').read_bytes(),
                   'PACKAGE.json': b'{}\n', 'SPLIT_ACCEPTANCE.json': b'{}\n'})
+patch_files = ('run.sh', 'docker-compat-entrypoint.py', 'run-seccomp-check.sh', 'DOCKER_COMPATIBILITY.md')
+resources.update({name: script.with_name(name).read_bytes() for name in patch_files})
 requests = []
 short_sent = False
 drop_sent = False
@@ -91,9 +93,19 @@ try:
                                 capture_output=True, text=True, timeout=120)
         assert result.returncode == 0, result.stdout+'\n'+result.stderr
         for name, value in contents.items():
-            assert (root/bundle/name).read_bytes() == value, name
-        for name in ('run-seccomp-check.sh', 'DOCKER_COMPATIBILITY.md'):
+            if name != 'run.sh':
+                assert (root/bundle/name).read_bytes() == value, name
+        assert (root/bundle/'run-original.sh').read_bytes() == contents['run.sh']
+        for name in patch_files:
             assert (root/bundle/name).read_bytes() == script.with_name(name).read_bytes(), name
+        missing = root/'missing-patch'
+        missing.mkdir()
+        (missing/'extract.sh').write_bytes(script.with_name('extract-release.sh').read_bytes())
+        (missing/'PARTS.tsv').write_bytes(resources['PARTS.tsv'])
+        rejected = subprocess.run(['bash', str(missing/'extract.sh')],
+                                  capture_output=True, text=True, timeout=10)
+        assert rejected.returncode == 1 and '缺少启动补丁' in rejected.stderr
+        assert not (missing/bundle).exists()
         assert not any(n == names[0] for n, _ in requests), 'Complete temporary part was downloaded again'
         assert [(n, r) for n, r in requests if n == names[1]] == [(names[1], None)]
         assert (names[2], 'bytes=123-') in requests
@@ -105,7 +117,8 @@ try:
               'oversized temporary file restarted', 'partial file resumed',
               '416 restarted without Range', 'short HTTP 200 response retried',
               'connection failure retried', 'complete archive extracted',
-              'current compatibility helper and guide copied beside frozen launcher']}, ensure_ascii=False))
+              'current launcher and compatibility helper installed; frozen launcher preserved',
+              'missing patch rejected before extraction']}, ensure_ascii=False))
 finally:
     server.shutdown()
     server.server_close()

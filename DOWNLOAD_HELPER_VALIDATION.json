@@ -1,10 +1,11 @@
 {
-  "verified_utc": "2026-10-10T01:50:57.279678+00:00",
+  "verified_utc": "2026-10-10T02:09:40.199437+00:00",
   "passed": true,
-  "scope": "Local HTTP fixture restores a small frozen archive, preserving its launcher and copying current helper/guide afterward. No production mirror or new Docker image is generated.",
+  "scope": "Local HTTP fixture restores frozen launcher, then atomically installs latest downloaded patch with original launcher backup; missing patch rejected before extraction. Production large archive unchanged.",
   "suites": [
     {
       "bash": "5.2",
+      "curl": "8.5",
       "passed": true,
       "checks": [
         "complete temporary file promoted",
@@ -14,11 +15,13 @@
         "short HTTP 200 response retried",
         "connection failure retried",
         "complete archive extracted",
-        "current compatibility helper and guide copied beside frozen launcher"
+        "current launcher and compatibility helper installed; frozen launcher preserved",
+        "missing patch rejected before extraction"
       ]
     },
     {
       "bash": "4.2",
+      "curl": "7.29",
       "passed": true,
       "checks": [
         "complete temporary file promoted",
@@ -28,7 +31,8 @@
         "short HTTP 200 response retried",
         "connection failure retried",
         "complete archive extracted",
-        "current compatibility helper and guide copied beside frozen launcher"
+        "current launcher and compatibility helper installed; frozen launcher preserved",
+        "missing patch rejected before extraction"
       ]
     }
   ]

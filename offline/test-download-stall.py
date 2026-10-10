@@ -27,6 +27,8 @@ payload = archive.getvalue()
 resources = {part_name: payload, 'PARTS.tsv': f'{part_name}\t{len(payload)}\n'.encode(),
              'extract.sh': script.with_name('extract-release.sh').read_bytes(),
              'PACKAGE.json': b'{}\n', 'SPLIT_ACCEPTANCE.json': b'{}\n'}
+patch_files = ('run.sh', 'docker-compat-entrypoint.py', 'run-seccomp-check.sh', 'DOCKER_COMPATIBILITY.md')
+resources.update({name: Path(__file__).with_name(name).read_bytes() for name in patch_files})
 
 
 def check(mode):

@@ -15,6 +15,7 @@ if [[ $mode == --verify-only ]]; then
 else
 if [[ -e $archive ]]; then echo "交付包已存在：$archive；请先移到其他位置。" >&2; exit 1; fi
 cp "$here/run.sh" "$destination/run.sh"
+cp "$here/docker-compat-entrypoint.py" "$destination/docker-compat-entrypoint.py"
 cp "$here/run-seccomp-check.sh" "$destination/run-seccomp-check.sh"
 cp "$here/DOCKER_COMPATIBILITY.md" "$destination/DOCKER_COMPATIBILITY.md"
 cp "$here/README.md" "$destination/使用说明.md"

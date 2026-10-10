@@ -14,7 +14,7 @@ bash run.sh
 
 下载默认使用单连接，支持续传，已完成且大小符合清单的分块会跳过。每 5 秒显示当前分块已下载的字节数和百分比；连续 60 秒传输速度低于 1 字节/秒会中止当前请求并重试，单次请求最多 900 秒。每个文件最多尝试 6 次。按 Ctrl+C 可停止下载并保留续传文件。
 
-下载全部 `zhongxing-storagestacked-offline-20261009-burst.tar.part-*`、`PARTS.tsv` 和 `extract.sh`，放在同一个目录，然后执行：
+下载全部 `zhongxing-storagestacked-offline-20261009-burst.tar.part-*`、`PARTS.tsv`、`extract.sh`，以及 `run.sh`、`docker-compat-entrypoint.py`、`run-seccomp-check.sh`、`DOCKER_COMPATIBILITY.md` 四个启动补丁文件，放在同一个目录，然后执行：
 
 ```bash
 bash extract.sh
@@ -51,28 +51,30 @@ bash download.sh
 
 制作方复核结果见 [CLIENT_VALIDATION.json](CLIENT_VALIDATION.json)。本次在空 Docker 环境中自动导入后，AXI、Vortex SMOKE/LLM、CoralNPU SMOKE/LLM 五项均通过，两个 SMOKE 输出 `42`，两个 LLM 输出 `blu`。本机首次导入和五项验收共约 41 分钟。公网实际下载 6 个分块，其余 406 个复用本地大小符合清单的分块后恢复完整交付包。此记录区分制作方验证和客户机器实际验收，客户系统与代理仍需实际确认。
 
-## Docker 20.10.0 编译失败
+## Docker 编译兼容修复
 
-如果编译日志出现 `posix_spawn failed: Operation not permitted`，请阅读
-[Docker 兼容说明](DOCKER_COMPATIBILITY.md)。在克隆仓库后自动下载并解包的目录中，
-最新 `download.sh` 会把仓库中的兼容入口与说明自动复制到解包目录。已解包的旧目录可直接复制最新兼容入口：
+正式 `run.sh` 已处理旧 Docker 下的 `posix_spawn failed: Operation not permitted`。
+默认保留 Docker seccomp，在容器内追加过滤器，使 glibc 回退到可用的进程创建方式。
+不需要手改脚本，也不需要默认关闭 seccomp。
+新版 `download.sh` 下载最新启动补丁，`extract.sh` 解包后安装补丁，旧入口备份为 `run-original.sh`。
+
+已解包的用户在本发布仓库内执行（目录按实际解压位置修改）：
 
 ```bash
+cp run.sh docker-compat-entrypoint.py run-seccomp-check.sh DOCKER_COMPATIBILITY.md downloads/zhongxing-storagestacked-offline-20261009-burst/
 cd downloads/zhongxing-storagestacked-offline-20261009-burst
-cp ../../run-seccomp-check.sh .
-sudo bash run-seccomp-check.sh vortex smoke
+sudo bash run.sh vortex smoke
 ```
 
-等待最终 `PASS` 后，用 `sudo bash run-seccomp-check.sh` 执行默认五项验收。
-`sudo bash run-seccomp-check.sh shell` 进入容器，执行 `ls` 可看到三个项目；
+等待最终 `PASS` 后，执行 `sudo bash run.sh` 进行默认五项验收。
+`sudo bash run.sh shell` 进入容器，`ls` 可看到三个项目；
 `cd vortex_StorageStacked` 后执行 `ls docs` 查看中文文档，输入 `exit` 退出。
-兼容脚本只对本次容器关闭 seccomp，继续断网且不拉取镜像。
-默认 `run.sh` 保留原安全策略；长期应更新 Docker 和配套运行时。
+完整操作、原因与验证范围见 [Docker 兼容说明](DOCKER_COMPATIBILITY.md)，
+制作方新验证见 [DOCKER_FIX_VALIDATION.json](DOCKER_FIX_VALIDATION.json)。
+`run-seccomp-check.sh` 仅保留为显式关闭 seccomp 的诊断入口。
 
-已下载旧归档的用户也可以从同一 Release 单独下载 `run-seccomp-check.sh`，
-放在原 `run.sh` 旁边使用。原 412 个分块及镜像是固定的 2026-10-09 快照；
-2026-10-10 更新的是 GitHub 源码、中文文档、制作脚本、兼容入口和复测记录，
-本次没有重建或替换已发布的大镜像。
+旧包无需重新下载大镜像，从同一 Release 单独取得上述四个补丁文件即可。
+原 412 个分块及镜像是固定的 2026-10-09 快照；本次更新启动脚本、制作入口和文档。
 
 ## 最新源码与制作入口
 

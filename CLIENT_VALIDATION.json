@@ -161,5 +161,12 @@
     "compatibility_notes": "DOCKER_COMPATIBILITY.md",
     "helper_delivery_validation": "DOWNLOAD_HELPER_VALIDATION.json",
     "download_and_extract_copy_current_helper": true
+  },
+  "formal_docker_fix": {
+    "verified_utc": "2026-10-10T02:09:40.199437+00:00",
+    "producer_simulated_policy_smoke_passed": true,
+    "customer_formal_fix_verified": false,
+    "details": "DOCKER_FIX_VALIDATION.json",
+    "archive_replaced": false
   }
 }

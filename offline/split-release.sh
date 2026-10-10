@@ -15,6 +15,9 @@ mkdir -p -- "$destination"
 tar -C "$here/dist" -cf - "$bundle" | split -b 25000000 -d -a 4 - "$destination/$bundle.tar.part-"
 cp "$here/extract-release.sh" "$destination/extract.sh"
 cp "$here/download-release.sh" "$destination/download.sh"
+for name in run.sh docker-compat-entrypoint.py run-seccomp-check.sh DOCKER_COMPATIBILITY.md; do
+    cp -- "$here/$name" "$destination/$name"
+done
 python3 - "$source_dir" "$destination" "$bundle" <<'PY'
 import json,sys
 from pathlib import Path
@@ -46,7 +49,7 @@ bash run.sh
 
 下载默认使用单连接，支持续传，已完成且大小符合清单的分块会跳过。每 5 秒显示分块字节数和百分比；连续 60 秒低于 1 字节/秒或单次请求超过 900 秒会重试，每个文件最多尝试 6 次。按 Ctrl+C 可停止下载并保留续传文件。
 
-下载全部 `{bundle}.tar.part-*`、`PARTS.tsv` 和 `extract.sh`，放在同一个目录，然后执行：
+下载全部 `{bundle}.tar.part-*`、`PARTS.tsv`、`extract.sh`，以及 `run.sh`、`docker-compat-entrypoint.py`、`run-seccomp-check.sh`、`DOCKER_COMPATIBILITY.md` 四个启动补丁文件，放在同一个目录，然后执行：
 
 ```bash
 bash extract.sh

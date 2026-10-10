@@ -33,6 +33,8 @@ payload = archive.getvalue()
 resources = {name: payload, 'PARTS.tsv': f'{name}\t{len(payload)}\n'.encode(),
              'extract.sh': extract.read_bytes(), 'PACKAGE.json': b'{}\n',
              'SPLIT_ACCEPTANCE.json': b'{}\n'}
+patch_files = ('run.sh', 'docker-compat-entrypoint.py', 'run-seccomp-check.sh', 'DOCKER_COMPATIBILITY.md')
+resources.update({name: Path(__file__).with_name(name).read_bytes() for name in patch_files})
 connect_dropped = False
 body_dropped = False
 requests = []
@@ -135,7 +137,10 @@ with tempfile.TemporaryDirectory(prefix='storagestacked-proxy-') as tmp:
         assert 'HTTP=302' in result.stderr or 'HTTP=000' in result.stderr, result.stderr
         assert (name, 'bytes=123-') in requests, requests
         for entry, value in contents.items():
-            assert (root/'downloads'/bundle/entry).read_bytes() == value, entry
+            if entry != 'run.sh':
+                assert (root/'downloads'/bundle/entry).read_bytes() == value, entry
+        for entry in patch_files:
+            assert (root/'downloads'/bundle/entry).read_bytes() == resources[entry], entry
         print(result.stdout, end='')
         print(result.stderr, end='')
         print(json.dumps({'passed': True, 'checks': [
