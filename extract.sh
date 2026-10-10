@@ -42,4 +42,9 @@ for name in run.sh 使用说明.md SOURCE_VERSIONS.json DELIVERY.json ACCEPTANCE
     [[ -f $restored/$name ]] || { echo "解包后缺少文件：$name" >&2; exit 1; }
 done
 mv -- "$restored" "$output/$bundle"
+for extra in run-seccomp-check.sh DOCKER_COMPATIBILITY.md; do
+    if [[ -f $here/$extra ]]; then
+        cp -- "$here/$extra" "$output/$bundle/$extra"
+    fi
+done
 printf '解包完成：%s\n运行：cd "%s" && bash run.sh\n' "$output/$bundle" "$output/$bundle"

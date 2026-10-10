@@ -126,3 +126,10 @@ fi
 [[ $failed == 0 ]] || { echo '下载未完成；再次运行可继续下载。' >&2; exit 1; }
 echo '全部分块已就绪，开始解包。'
 bash "$destination/extract.sh" "$destination"
+# The frozen archive remains intact; copy optional current helpers from the
+# release repository alongside its original launcher after successful restore.
+for extra in run-seccomp-check.sh DOCKER_COMPATIBILITY.md; do
+    if [[ -f $here/$extra ]]; then
+        cp -- "$here/$extra" "$destination/$bundle/$extra"
+    fi
+done

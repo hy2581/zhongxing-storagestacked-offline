@@ -55,7 +55,7 @@ bash download.sh
 
 如果编译日志出现 `posix_spawn failed: Operation not permitted`，请阅读
 [Docker 兼容说明](DOCKER_COMPATIBILITY.md)。在克隆仓库后自动下载并解包的目录中，
-可直接复制最新兼容入口：
+最新 `download.sh` 会把仓库中的兼容入口与说明自动复制到解包目录。已解包的旧目录可直接复制最新兼容入口：
 
 ```bash
 cd downloads/zhongxing-storagestacked-offline-20261009-burst

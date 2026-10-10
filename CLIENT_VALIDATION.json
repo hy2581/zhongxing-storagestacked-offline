@@ -158,6 +158,8 @@
     "customer_seccomp_unconfined_compile_passed": true,
     "customer_final_smoke_summary_verified": false,
     "compatibility_entrypoint": "run-seccomp-check.sh",
-    "compatibility_notes": "DOCKER_COMPATIBILITY.md"
+    "compatibility_notes": "DOCKER_COMPATIBILITY.md",
+    "helper_delivery_validation": "DOWNLOAD_HELPER_VALIDATION.json",
+    "download_and_extract_copy_current_helper": true
   }
 }

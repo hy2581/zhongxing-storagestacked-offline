@@ -92,6 +92,8 @@ try:
         assert result.returncode == 0, result.stdout+'\n'+result.stderr
         for name, value in contents.items():
             assert (root/bundle/name).read_bytes() == value, name
+        for name in ('run-seccomp-check.sh', 'DOCKER_COMPATIBILITY.md'):
+            assert (root/bundle/name).read_bytes() == script.with_name(name).read_bytes(), name
         assert not any(n == names[0] for n, _ in requests), 'Complete temporary part was downloaded again'
         assert [(n, r) for n, r in requests if n == names[1]] == [(names[1], None)]
         assert (names[2], 'bytes=123-') in requests
@@ -102,7 +104,8 @@ try:
         print(json.dumps({'passed': True, 'checks': ['complete temporary file promoted',
               'oversized temporary file restarted', 'partial file resumed',
               '416 restarted without Range', 'short HTTP 200 response retried',
-              'connection failure retried', 'complete archive extracted']}, ensure_ascii=False))
+              'connection failure retried', 'complete archive extracted',
+              'current compatibility helper and guide copied beside frozen launcher']}, ensure_ascii=False))
 finally:
     server.shutdown()
     server.server_close()

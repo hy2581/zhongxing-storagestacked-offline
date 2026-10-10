@@ -1,0 +1,35 @@
+{
+  "verified_utc": "2026-10-10T01:50:57.279678+00:00",
+  "passed": true,
+  "scope": "Local HTTP fixture restores a small frozen archive, preserving its launcher and copying current helper/guide afterward. No production mirror or new Docker image is generated.",
+  "suites": [
+    {
+      "bash": "5.2",
+      "passed": true,
+      "checks": [
+        "complete temporary file promoted",
+        "oversized temporary file restarted",
+        "partial file resumed",
+        "416 restarted without Range",
+        "short HTTP 200 response retried",
+        "connection failure retried",
+        "complete archive extracted",
+        "current compatibility helper and guide copied beside frozen launcher"
+      ]
+    },
+    {
+      "bash": "4.2",
+      "passed": true,
+      "checks": [
+        "complete temporary file promoted",
+        "oversized temporary file restarted",
+        "partial file resumed",
+        "416 restarted without Range",
+        "short HTTP 200 response retried",
+        "connection failure retried",
+        "complete archive extracted",
+        "current compatibility helper and guide copied beside frozen launcher"
+      ]
+    }
+  ]
+}
